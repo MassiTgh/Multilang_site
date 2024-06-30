@@ -1,0 +1,33 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ article.title }}</title>
+</head>
+<body>
+    <navbar>
+        <div>
+            <a href="/">{% trans "Accueil" %}</a>
+            <a href="{% url 'new_article' %}">{% trans "Ajouter un article" %}</a>
+        </div>
+        <form action="{% url 'set_language' %}" method="post">
+            {% csrf_token %}
+            <select name="language" onchange="this.form.submit()">
+                {% get_current_language as LANGUAGE_CODE %}
+                {% get_available_languages as LANGUAGES %}
+                {% for lang in LANGUAGES %}
+                    <option value="{{ lang.0 }}"{% if lang.0 == LANGUAGE_CODE %} selected{% endif %}>{{ lang.1 }}</option>
+                {% endfor %}
+            </select>
+            <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        </form>
+    </navbar>
+
+    <h1>{{ article.title }}</h1>
+    <div>{{ article.content|safe }}</div>
+    <p>{% trans "Publié le :" %} {{ article.publication_date }}</p>
+    <a href="{% url 'main-index' %}">{% trans "Retour à la liste des articles" %}</a>
+</body>
+</html>
