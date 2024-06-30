@@ -10,7 +10,7 @@ services:
     name: multilang_site
     runtime: python
     buildCommand: "pip install -r requirements.txt"
-    startCommand: "python -m gunicorn multilang_site.asgi:application -k uvicorn.workers.UvicornWorker"
+    startCommand: "python3 -m gunicorn multilang_site.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
       - key: DATABASE_URL
         fromDatabase:
