@@ -1,8 +1,8 @@
 databases:
   - name: multilang_site_db
+    type: sqlite
     plan: free
-    databaseName: db.sqlite3
-    user: mysite
+    defaultDatabaseName: db.sqlite3
 
 services:
   - type: web
