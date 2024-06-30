@@ -1,21 +1,21 @@
-databases:
-  - name: multilang_site
-    plan: free
-    databaseName: db.sqlite3
-    user: mysite
-
 services:
   - type: web
+    name: multilang-site
     plan: free
-    name: multilang_site
     runtime: python
-    buildCommand: "./build.sh"
-    startCommand: "python -m gunicorn multilang_site.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
-      - key: DATABASE_URL
-        fromDatabase:
-          name: db.sqlite3
-          property: connectionString
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "python src/manage.py runserver 0.0.0.0:$PORT"
+    envVars:
+      - key: DJANGO_SETTINGS_MODULE
+        value: multilang_site.settings
       - key: SECRET_KEY
         generateValue: true
-      - key: WEB_CONCURRENCY
-        value: 4
+      - key: DATABASE_URL
+        fromFile:
+          path: db.sqlite3
+
+databases:
+  - name: multilang-site-db
+    type: sqlite
+    plan: hobby
+    defaultDatabaseName: db.sqlite3
